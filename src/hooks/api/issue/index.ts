@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
-import {Issue} from '../../@types/github';
-import {githubIssueApiRequest} from '../../api/github/issue';
+import {githubIssueApiRequest} from './client';
+import {Issue} from '../../../@types/github';
 
 export const useIssueApi = () => {
   return {
