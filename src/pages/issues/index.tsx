@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+import {route} from '../../config/route';
 import {useIssueApi} from '../../hooks/api/issue';
 
 type Props = Record<string, unknown>;
@@ -18,11 +20,11 @@ export const Issues: React.FC<Props> = () => {
   return (
     <div>
       {issues?.map((issue) => (
-        <div key={issue.id}>
+        <Link key={issue.id} to={route.showIssue(issue.number)}>
           <p>{issue.id}</p>
           <p>{issue.title}</p>
           <div style={{border: '1px solid #000', width: '100%'}} />
-        </div>
+        </Link>
       ))}
     </div>
   );
