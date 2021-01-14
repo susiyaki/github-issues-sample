@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+## 概要
+githubの公開APIを使って、以下の2ページをSingle Page Applicationとして実装してください。
+1. issue一覧ページ
+    - urlは　/issues
+    - こちらのendpointを使って、１ページに10件ずつissueを表示する　
+https://api.github.com/repos/facebook/react/issues?page=1&per_page=10
+    - 一覧に表示する各issueの表示要素は、「issue番号」と、「タイトル」とする
+    - URLクエリパラメータでpage指定ができるようにする (/issues?page=1 のように)
+    - 一覧の各issueをクリックしたら詳細ページに遷移する
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+2. issue詳細ページ
+    - urlは /issues/:number
+    - 詳細ページの表示要素は、「issue番号」「タイトル」「本文」とする
 
-## Available Scripts
+3. 一覧ページに、Pagination UIを追加する
+    - 最初のページ、前のページ、次のページ、最後のページ、に移動できるリンクがあること
+    - 上記を満たせばUIは自由
+つまり、
+https://github.co/facebook/react/issues
+このページの簡易版のようなものを作ると考えてください。
 
-In the project directory, you can run:
+### 条件
+- クライアントサイドでroutingを処理する、Single Page Applicationであること
+- Vue.js, React, Angular などを利用していること（Nuxt.js、Next.jsも可）
 
-### `yarn start`
+### 注意事項
+- それ以外のライブラリも必要に応じて自由に使ってください。
+- UIは自由に考えてください。（デザイン的な完成度ではなく、使いやすさを重視しますので、UIに関するライブラリなども自由に利用してください。）
+- 今後チームで運用・保守していくプロジェクトのつもりで、読みやすさとスケーラビリティを意識してください。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 提出物と方法
+1. ソースコード
+  - githubの公開リポジトリでソースコードが見られるようにして、提出してください。
+2. 動作するURL
+  - 動作するページが見られるような環境を用意して、URLを教えてください。
+3. 実装方針
+  - 設計の意図や理由などに関し、簡単に説明してください。
+  - 時間がなくて完成できなかった場合は、予定していた実装方針などを教えてください。
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## APIについて
+※githubの公開APIは、1時間に送れるのは60リクエストに制限されているので、開発の際はご注意ください。
+https://docs.github.com/en/rest#rate-limiting
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### APIドキュメント
+#### 基本仕様ドキュメントはこちら  
+https://docs.github.com/en/rest
+#### issuesの取得に関するAPI  
+https://docs.github.com/en/rest/reference/issues
+#### ページングに関する仕様  
+https://docs.github.com/en/rest#paginationm
