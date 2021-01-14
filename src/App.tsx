@@ -2,8 +2,8 @@ import React from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {HashRouter, Switch, Route, Redirect} from 'react-router-dom';
 import './App.css';
-import {route} from './config/route';
 import {Issues} from './pages/issues';
+import {Issue} from './pages/issues/_number';
 
 type Props = Record<string, unknown>;
 
@@ -14,8 +14,9 @@ const App: React.FC<Props> = () => {
     <QueryClientProvider client={queryClient}>
       <HashRouter>
         <Switch>
-          <Route exact path={route.issues} component={Issues} />
-          <Route render={() => <Redirect to={route.issues} />} />
+          <Route exact path="/issues/:number" component={Issue} />
+          <Route exact path="/issues" component={Issues} />
+          <Route render={() => <Redirect to="/issues" />} />
         </Switch>
       </HashRouter>
     </QueryClientProvider>
