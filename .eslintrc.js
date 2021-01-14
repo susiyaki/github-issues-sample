@@ -31,5 +31,16 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
+    '@typescript-eslint/explicit-module-boundary-types': 'warn',
+    'no-unused-vars': 'warn',
   },
+  overrides: [
+    {
+      // enable the rule specifically for TypeScript files
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/explicit-module-boundary-types': ['warn'],
+      },
+    },
+  ],
 };
