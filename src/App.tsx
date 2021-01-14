@@ -3,7 +3,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import {HashRouter, Switch, Route, Redirect} from 'react-router-dom';
 import './App.css';
 import {Issues} from './pages/issues';
-import {Issue} from './pages/issues/_id';
+import {Issue} from './pages/issues/_number';
 
 type Props = Record<string, unknown>;
 
