@@ -19,5 +19,14 @@ export const useIssueApi = () => {
             .then((res) => res.data),
         staleTime: 20000, // TODO
       }),
+
+    showIssue: ({issueNumStr}: {issueNumStr: string}) =>
+      useQuery<Issue, Error>({
+        queryKey: ['issue', issueNumStr],
+        queryFn: () =>
+          apiClient
+            .get<Issue>(`repos/facebook/react/issues/${issueNumStr}`)
+            .then((res) => res.data),
+      }),
   };
 };

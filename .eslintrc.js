@@ -33,6 +33,7 @@ module.exports = {
     'jest/valid-expect': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     'no-unused-vars': 'warn',
+    'react/prop-types': 'off',
   },
   overrides: [
     {
