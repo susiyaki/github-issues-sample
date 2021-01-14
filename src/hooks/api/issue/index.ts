@@ -1,8 +1,17 @@
-import {useQuery} from 'react-query';
+import {useQuery, UseQueryResult} from 'react-query';
 import {githubIssueApiRequest} from './client';
 import {Issue} from '../../../@types/github';
 
-export const useIssueApi = () => {
+type UseIssueApi = {
+  getIssues: (args: {
+    offset: number;
+    limit: number;
+  }) => UseQueryResult<Issue[], Error>;
+
+  getIssue: (args: {issueNumStr: string}) => UseQueryResult<Issue, Error>;
+};
+
+export const useIssueApi = (): UseIssueApi => {
   return {
     getIssues: (args: {offset: number; limit: number}) =>
       useQuery<Issue[], Error>({
@@ -11,7 +20,7 @@ export const useIssueApi = () => {
         staleTime: 20000, // TODO
       }),
 
-    showIssue: (args: {issueNumStr: string}) =>
+    getIssue: (args: {issueNumStr: string}) =>
       useQuery<Issue, Error>({
         queryKey: ['issue', args.issueNumStr],
         queryFn: () => githubIssueApiRequest.getIssue(args),

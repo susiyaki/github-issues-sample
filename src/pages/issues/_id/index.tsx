@@ -5,9 +5,9 @@ import {useIssueApi} from '../../../hooks/api/issue';
 type Props = Record<string, unknown> & RouteComponentProps<{number: string}>;
 
 export const Issue: React.FC<Props> = (props) => {
-  const {showIssue} = useIssueApi();
+  const {getIssue} = useIssueApi();
   const issueNumStr = props.match.params.number;
-  const {data: issue, status} = showIssue({issueNumStr});
+  const {data: issue, status} = getIssue({issueNumStr});
 
   if (status === 'loading') {
     return (
