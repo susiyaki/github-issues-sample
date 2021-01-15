@@ -1,28 +1,52 @@
 import {useQuery, UseQueryResult} from 'react-query';
 import {githubIssueApiRequest} from './client';
-import {Issue} from '../../../@types/github';
+import {Github} from '../../../@types/github';
 
 type UseIssueApi = {
   getIssues: (args: {
-    offset: number;
-    limit: number;
-  }) => UseQueryResult<Issue[], Error>;
+    queryParams: {
+      owner: string;
+      repo: string;
+      offset: number;
+      limit: number;
+    };
+  }) => UseQueryResult<Github.Issue[], Error>;
 
-  getIssue: (args: {issueNumStr: string}) => UseQueryResult<Issue, Error>;
+  getIssue: (args: {
+    queryParams: {
+      owner: string;
+      repo: string;
+      issueNumStr: string;
+    };
+  }) => UseQueryResult<Github.Issue, Error>;
 };
 
 export const useIssueApi = (): UseIssueApi => {
   return {
-    getIssues: (args: {offset: number; limit: number}) =>
-      useQuery<Issue[], Error>({
-        queryKey: ['issues', args.offset, args.limit],
+    getIssues: (args: {
+      queryParams: {
+        owner: string;
+        repo: string;
+        offset: number;
+        limit: number;
+      };
+    }) =>
+      useQuery<Github.Issue[], Error>({
+        queryKey: ['issues', args.queryParams.offset, args.queryParams.limit],
         queryFn: () => githubIssueApiRequest.getIssues(args),
         staleTime: 20000, // TODO
+        keepPreviousData: true,
       }),
 
-    getIssue: (args: {issueNumStr: string}) =>
-      useQuery<Issue, Error>({
-        queryKey: ['issue', args.issueNumStr],
+    getIssue: (args: {
+      queryParams: {
+        owner: string;
+        repo: string;
+        issueNumStr: string;
+      };
+    }) =>
+      useQuery<Github.Issue, Error>({
+        queryKey: ['issue', args.queryParams.issueNumStr],
         queryFn: () => githubIssueApiRequest.getIssue(args),
       }),
   };

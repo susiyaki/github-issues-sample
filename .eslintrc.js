@@ -34,6 +34,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     'no-unused-vars': 'warn',
     'react/prop-types': 'off',
+    'prettier/prettier': 'warn',
   },
   overrides: [
     {

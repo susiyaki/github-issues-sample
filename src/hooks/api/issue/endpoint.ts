@@ -1,7 +1,23 @@
 export const githubIssueEndpoint = {
-  getIssues: ({offset, limit}: {offset: number; limit: number}): string =>
-    `repos/facebook/react/issues?page=${offset}&per_page=${limit}`,
+  getIssues: ({
+    owner: orgs,
+    repo,
+    offset,
+    limit,
+  }: {
+    owner: string;
+    repo: string;
+    offset: number;
+    limit: number;
+  }): string => `repos/${orgs}/${repo}/issues?page=${offset}&per_page=${limit}`,
 
-  getIssue: ({issueNumStr}: {issueNumStr: string}): string =>
-    `repos/facebook/react/issues/${issueNumStr}`,
+  getIssue: ({
+    owner: orgs,
+    repo,
+    issueNumStr,
+  }: {
+    owner: string;
+    repo: string;
+    issueNumStr: string;
+  }): string => `repos/${orgs}/${repo}/issues/${issueNumStr}`,
 };
