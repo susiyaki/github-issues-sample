@@ -3,6 +3,8 @@ import {apiClient, githubIssueApiRequest} from './client';
 import {githubIssueEndpoint} from './endpoint';
 
 const githubIssueApiMock = new MockAdapter(apiClient);
+const owner = 'owner';
+const repo = 'repo';
 
 describe('【API】githubIssueApiRequest', () => {
   afterEach(() => {
@@ -26,10 +28,17 @@ describe('【API】githubIssueApiRequest', () => {
       const limit = 2;
 
       githubIssueApiMock
-        .onGet(githubIssueEndpoint.getIssues({offset, limit}))
+        .onGet(githubIssueEndpoint.getIssues({owner, repo, offset, limit}))
         .reply(200, mockData.slice(offset * limit, offset * limit + limit));
 
-      const response = await githubIssueApiRequest.getIssues({offset, limit});
+      const response = await githubIssueApiRequest.getIssues({
+        queryParams: {
+          owner,
+          repo,
+          offset,
+          limit,
+        },
+      });
 
       expect(response).toStrictEqual(mockData.slice(0, 2));
       expect(response).toHaveLength(2);
@@ -40,10 +49,17 @@ describe('【API】githubIssueApiRequest', () => {
       const limit = 10;
 
       githubIssueApiMock
-        .onGet(githubIssueEndpoint.getIssues({offset, limit}))
+        .onGet(githubIssueEndpoint.getIssues({owner, repo, offset, limit}))
         .reply(200, mockData.slice(offset * limit, offset * limit + limit));
 
-      const response = await githubIssueApiRequest.getIssues({offset, limit});
+      const response = await githubIssueApiRequest.getIssues({
+        queryParams: {
+          owner,
+          repo,
+          offset,
+          limit,
+        },
+      });
 
       expect(response).toStrictEqual(mockData);
       expect(response).toHaveLength(mockData.length);
@@ -63,14 +79,24 @@ describe('【API】githubIssueApiRequest', () => {
       const number = 3;
 
       githubIssueApiMock
-        .onGet(githubIssueEndpoint.getIssue({issueNumStr: number.toString()}))
+        .onGet(
+          githubIssueEndpoint.getIssue({
+            owner,
+            repo,
+            issueNumStr: number.toString(),
+          }),
+        )
         .reply(
           200,
           mockData.find((d) => d.number === number),
         );
 
       const response = await githubIssueApiRequest.getIssue({
-        issueNumStr: number.toString(),
+        queryParams: {
+          owner,
+          repo,
+          issueNumStr: number.toString(),
+        },
       });
 
       expect(response).toStrictEqual(mockData[2]);

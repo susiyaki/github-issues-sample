@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {githubIssueEndpoint} from './endpoint';
+import {githubIssueEndpoint, GithubIssueEndpoint} from './endpoint';
 import {Github} from '../../../@types/github';
 
 export const apiClient = axios.create({
@@ -10,12 +10,7 @@ export const githubIssueApiRequest = {
   getIssues: ({
     queryParams,
   }: {
-    queryParams: {
-      owner: string;
-      repo: string;
-      offset: number;
-      limit: number;
-    };
+    queryParams: GithubIssueEndpoint.GetIssues;
   }): Promise<Github.Issue[]> =>
     apiClient
       .get<Github.Issue[]>(githubIssueEndpoint.getIssues(queryParams))
@@ -24,11 +19,7 @@ export const githubIssueApiRequest = {
   getIssue: ({
     queryParams,
   }: {
-    queryParams: {
-      owner: string;
-      repo: string;
-      issueNumStr: string;
-    };
+    queryParams: GithubIssueEndpoint.GetIssue;
   }): Promise<Github.Issue> =>
     apiClient
       .get<Github.Issue>(githubIssueEndpoint.getIssue(queryParams))

@@ -1,23 +1,15 @@
 import {useQuery, UseQueryResult} from 'react-query';
 import {githubIssueApiRequest} from './client';
+import {GithubIssueEndpoint} from './endpoint';
 import {Github} from '../../../@types/github';
 
 type UseIssueApi = {
   getIssues: (args: {
-    queryParams: {
-      owner: string;
-      repo: string;
-      offset: number;
-      limit: number;
-    };
+    queryParams: GithubIssueEndpoint.GetIssues;
   }) => UseQueryResult<Github.Issue[], Error>;
 
   getIssue: (args: {
-    queryParams: {
-      owner: string;
-      repo: string;
-      issueNumStr: string;
-    };
+    queryParams: GithubIssueEndpoint.GetIssue;
   }) => UseQueryResult<Github.Issue, Error>;
 };
 
