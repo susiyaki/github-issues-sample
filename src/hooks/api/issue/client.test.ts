@@ -1,5 +1,8 @@
-import {githubIssueApiRequest, githubIssueApiMock} from './client';
+import MockAdapter from 'axios-mock-adapter';
+import {apiClient, githubIssueApiRequest} from './client';
 import {githubIssueEndpoint} from './endpoint';
+
+const githubIssueApiMock = new MockAdapter(apiClient);
 
 describe('【API】githubIssueApiRequest', () => {
   afterEach(() => {
