@@ -1,13 +1,19 @@
 import React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
-import {useIssueApi} from '../../../hooks/api/issue';
+import {useGithubIssuesApi} from '@hooks';
 
 type Props = Record<string, unknown> & RouteComponentProps<{number: string}>;
 
+// TODO
+const owner = 'facebook';
+const repo = 'react';
+
 export const Issue: React.FC<Props> = (props) => {
-  const {getIssue} = useIssueApi();
+  const {getIssue} = useGithubIssuesApi();
   const issueNumStr = props.match.params.number;
-  const {data: issue, status} = getIssue({issueNumStr});
+  const {data: issue, status} = getIssue({
+    queryParams: {owner, repo, issueNumStr},
+  });
 
   if (status === 'loading') {
     return (
