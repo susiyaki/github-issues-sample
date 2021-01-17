@@ -1,4 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
+import {OverlayIndicator} from '@components/atoms';
 import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
@@ -74,7 +75,7 @@ export const Issues: React.FC<Props> = () => {
   );
 
   if (issues.length === 0 && status === 'loading') {
-    return <p>load</p>;
+    return <OverlayIndicator isVisible={true} />;
   }
 
   return (
