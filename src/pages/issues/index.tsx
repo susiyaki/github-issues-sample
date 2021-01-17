@@ -1,8 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import ReactPaginate from 'react-paginate';
-import {Link} from 'react-router-dom';
+import {Pagination} from '@components/molecules';
+import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
-import {route} from '@config/route';
 import {ApiResponse} from '@types';
 
 type Props = Record<string, unknown>;
@@ -48,15 +47,15 @@ export const Issues: React.FC<Props> = () => {
     },
   });
 
-  const totalPageCount = useMemo(() => {
-    if (!openIssues || !closedIssues) return 0;
+  const totalCount = useMemo(() => {
+    if (!openIssues || !closedIssues) return 1;
 
     if (filter.state === 'open') {
-      return openIssues.total_count / PER_PAGE;
+      return openIssues.total_count;
     } else if (filter.state === 'closed') {
-      return closedIssues.total_count / PER_PAGE;
+      return closedIssues.total_count;
     } else {
-      return openIssues.total_count + closedIssues.total_count / PER_PAGE;
+      return openIssues.total_count + closedIssues.total_count;
     }
   }, [openIssues, closedIssues, filter.state]);
 
@@ -65,8 +64,9 @@ export const Issues: React.FC<Props> = () => {
   }, []);
 
   const handlePageChange = useCallback(
-    ({selected}) => {
-      setPage(selected + 1);
+    (e, page) => {
+      e.preventDefault();
+      setPage(page);
     },
     [page],
   );
@@ -78,6 +78,7 @@ export const Issues: React.FC<Props> = () => {
       </div>
     );
   }
+  console.log(issues);
 
   if (!issues) {
     return (
@@ -98,18 +99,11 @@ export const Issues: React.FC<Props> = () => {
       <p onClick={() => handleChangeFilter({state: 'all'})}>
         reset state filter
       </p>
-      {issues.map((issue) => (
-        <Link key={issue.id} to={route.showIssue(issue.number)}>
-          <p>{issue.id}</p>
-          <p>{issue.title}</p>
-          <p>{issue.state}</p>
-          <div style={{border: '1px solid #000', width: '100%'}} />
-        </Link>
-      ))}
-      <ReactPaginate
-        pageCount={totalPageCount}
-        pageRangeDisplayed={4}
-        marginPagesDisplayed={1}
+      <IssueList issues={issues} />
+      <Pagination
+        currentPage={page}
+        perPage={PER_PAGE}
+        totalCount={totalCount}
         onPageChange={handlePageChange}
       />
     </div>
