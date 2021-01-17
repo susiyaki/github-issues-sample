@@ -40,7 +40,7 @@ export const Issues: React.FC<Props> = () => {
       owner,
       repo,
       page,
-      per_page: PER_PAGE,
+      perPage: PER_PAGE,
       state: filter.state,
     },
     options: {

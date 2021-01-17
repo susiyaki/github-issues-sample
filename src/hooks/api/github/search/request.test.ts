@@ -7,7 +7,6 @@ const apiMock = new MockAdapter(apiClient);
 const owner = 'owner';
 const repo = 'repo';
 
-// TODO
 describe('【API】githubSearchApiRequest', () => {
   afterEach(() => {
     apiMock.reset();
@@ -17,14 +16,22 @@ describe('【API】githubSearchApiRequest', () => {
   });
 
   describe('searchIssues', () => {
-    const mockData = [
-      {id: 1, repo: `${owner}/${repo}`, isOpen: true, type: 'issue'},
-      {id: 2, repo: `mock/data`, isOpen: true, type: 'issue'},
-      {id: 3, repo: `${owner}/${repo}`, isOpen: false, type: 'pr'},
-      {id: 4, repo: `${owner}/${repo}`, isOpen: false, type: 'issue'},
-      {id: 4, repo: `${owner}/${repo}`, isOpen: true, type: 'pr'},
-    ];
+    test('リクエストを送ると指定したレスポンスが返る', async () => {
+      const mockResponse = 'searchIssues mock response';
+      apiMock
+        .onGet(
+          githubSearchEndpoint.searchIssues({
+            repo: `${owner}/${repo}`,
+            state: 'open',
+          }),
+        )
+        .reply(200, mockResponse);
 
-    test.skip('指定したrepositoryのissueを取得できる', () => {});
+      const response = await githubSearchApiRequest.searchIssues({
+        queryParams: {repo: `${owner}/${repo}`, state: 'open'},
+      });
+
+      expect(response).toStrictEqual(mockResponse);
+    });
   });
 });

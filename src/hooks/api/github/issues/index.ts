@@ -24,7 +24,7 @@ export const useGithubIssuesApi = (): UseIssuesApi => {
           queryParams.owner,
           queryParams.repo,
           queryParams.page,
-          queryParams.per_page,
+          queryParams.perPage,
           queryParams.state,
         ],
         queryFn: () => githubIssueApiRequest.getIssues({queryParams}),
