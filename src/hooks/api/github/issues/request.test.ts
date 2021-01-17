@@ -3,16 +3,16 @@ import {apiClient} from '../apiClient';
 import {githubIssueApiRequest} from './request';
 import {githubIssueEndpoint} from './endpoint';
 
-const githubIssueApiMock = new MockAdapter(apiClient);
+const apiMock = new MockAdapter(apiClient);
 const owner = 'owner';
 const repo = 'repo';
 
 describe('【API】githubIssueApiRequest', () => {
   afterEach(() => {
-    githubIssueApiMock.reset();
+    apiMock.reset();
   });
   afterAll(() => {
-    githubIssueApiMock.restore();
+    apiMock.restore();
   });
 
   describe('getIssues: サーバのデータは5件', () => {
@@ -28,7 +28,7 @@ describe('【API】githubIssueApiRequest', () => {
       const offset = 0;
       const limit = 2;
 
-      githubIssueApiMock
+      apiMock
         .onGet(githubIssueEndpoint.getIssues({owner, repo, offset, limit}))
         .reply(200, mockData.slice(offset * limit, offset * limit + limit));
 
@@ -49,7 +49,7 @@ describe('【API】githubIssueApiRequest', () => {
       const offset = 0;
       const limit = 10;
 
-      githubIssueApiMock
+      apiMock
         .onGet(githubIssueEndpoint.getIssues({owner, repo, offset, limit}))
         .reply(200, mockData.slice(offset * limit, offset * limit + limit));
 
@@ -79,7 +79,7 @@ describe('【API】githubIssueApiRequest', () => {
     test('指定したnumber(3)のデータが取得できる', async () => {
       const number = 3;
 
-      githubIssueApiMock
+      apiMock
         .onGet(
           githubIssueEndpoint.getIssue({
             owner,

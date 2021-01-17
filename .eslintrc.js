@@ -23,7 +23,7 @@ module.exports = {
   plugins: ['jest'],
   env: {
     'jest/globals': true,
-    browser: true,
+    node: true,
   },
   rules: {
     'jest/no-disabled-tests': 'warn',
