@@ -1,11 +1,11 @@
-import {GithubRepositoryEndpoint} from './endpoint.d';
+type GetRepositoryQueryParams = {
+  owner: string;
+  repo: string;
+};
 
-export type {GithubRepositoryEndpoint};
+export type {GetRepositoryQueryParams};
 
 export const githubRepositoryEndpoint = {
-  getRepository: ({
-    owner,
-    repo,
-  }: GithubRepositoryEndpoint.GetRepository): string =>
+  getRepository: ({owner, repo}: GetRepositoryQueryParams): string =>
     `repos/${owner}/${repo}`,
 };

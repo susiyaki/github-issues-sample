@@ -1,6 +1,9 @@
 import MockAdapter from 'axios-mock-adapter';
-import {apiClient, githubRepositoryApiRequest} from './client';
-import {githubRepositoryEndpoint} from './endpoint';
+import {
+  apiClient,
+  githubRepositoryApiRequest,
+} from '@hooks/api/repository/client';
+import {githubRepositoryEndpoint} from '@hooks/api/repository/endpoint';
 
 const githubRepositoryApiMock = new MockAdapter(apiClient);
 const owner = 'owner';

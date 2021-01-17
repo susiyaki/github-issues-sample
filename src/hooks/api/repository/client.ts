@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {githubRepositoryEndpoint} from './endpoint';
-import {Github} from '../../../@types/github';
+import {githubRepositoryEndpoint} from '@hooks/api/repository/endpoint';
+import {ApiResponse} from '@types';
 
 export const apiClient = axios.create({
   baseURL: 'https://api.github.com',
@@ -14,9 +14,9 @@ export const githubRepositoryApiRequest = {
       owner: string;
       repo: string;
     };
-  }): Promise<Github.TemplateRepository> =>
+  }): Promise<ApiResponse.Github.TemplateRepository> =>
     apiClient
-      .get<Github.TemplateRepository>(
+      .get<ApiResponse.Github.TemplateRepository>(
         githubRepositoryEndpoint.getRepository(queryParams),
       )
       .then((res) => res.data),

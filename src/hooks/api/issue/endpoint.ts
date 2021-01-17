@@ -13,14 +13,9 @@ type GetIssueQueryParams = {
 export type {GetIssuesQueryParams, GetIssueQueryParams};
 
 export const githubIssueEndpoint = {
-  getIssues: ({
-    owner: orgs,
-    repo,
-    offset,
-    limit,
-  }: GetIssuesQueryParams): string =>
-    `repos/${orgs}/${repo}/issues?page=${offset}&per_page=${limit}`,
+  getIssues: ({owner, repo, offset, limit}: GetIssuesQueryParams): string =>
+    `repos/${owner}/${repo}/issues?page=${offset}&per_page=${limit}`,
 
-  getIssue: ({owner: orgs, repo, issueNumStr}: GetIssueQueryParams): string =>
-    `repos/${orgs}/${repo}/issues/${issueNumStr}`,
+  getIssue: ({owner, repo, issueNumStr}: GetIssueQueryParams): string =>
+    `repos/${owner}/${repo}/issues/${issueNumStr}`,
 };
