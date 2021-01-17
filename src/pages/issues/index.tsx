@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {route} from '../../config/route';
-import {useIssuesApi, useRepositoriesApi} from '@hooks';
+import {useIssuesApi, useIssuesAndPullRequestApi} from '@hooks';
+import {route} from '@config/route';
 
 type Props = Record<string, unknown>;
 
@@ -11,16 +11,25 @@ const owner = 'facebook';
 const repo = 'react';
 
 export const Issues: React.FC<Props> = () => {
-  const {getRepository} = useRepositoriesApi();
   const {getIssues} = useIssuesApi();
+  const {search} = useIssuesAndPullRequestApi();
   const [page, setPage] = useState<number>(0);
 
-  const {data: repository} = getRepository({
+  const {data: openIssues} = search({
     queryParams: {
-      owner,
-      repo,
+      repo: `${owner}/${repo}`,
+      type: 'issue',
+      state: 'open',
     },
   });
+  const {data: closedIssues} = search({
+    queryParams: {
+      repo: `${owner}/${repo}`,
+      type: 'issue',
+      state: 'closed',
+    },
+  });
+  console.log(openIssues?.total_count, closedIssues?.total_count);
 
   const {data: issues, status} = getIssues({
     queryParams: {

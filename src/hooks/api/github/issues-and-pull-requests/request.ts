@@ -6,6 +6,7 @@ import {
 import {apiClient} from '../apiClient';
 
 export const githubIssuesAndPullRequestsApiRequest = {
+  // NOTE: https://docs.github.com/en/rest/reference/search#search-issues-and-pull-requests
   search: ({
     queryParams,
   }: {
