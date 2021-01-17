@@ -1,45 +1,46 @@
 import {useQuery, UseQueryResult} from 'react-query';
-import {githubIssueApiRequest} from './client';
-import {GithubIssueEndpoint} from './endpoint';
-import {Github} from '../../../@types/github';
+import {githubIssueApiRequest} from '@hooks/api/issue/client';
+import {
+  GetIssuesQueryParams,
+  GetIssueQueryParams,
+} from '@hooks/api/issue/endpoint';
+import {GithubIssue} from '@types/github';
 
 type UseIssueApi = {
   getIssues: (args: {
-    queryParams: GithubIssueEndpoint.GetIssues;
-  }) => UseQueryResult<Github.Issue[], Error>;
+    queryParams: GetIssuesQueryParams;
+  }) => UseQueryResult<GithubIssue[], Error>;
 
   getIssue: (args: {
-    queryParams: GithubIssueEndpoint.GetIssue;
-  }) => UseQueryResult<Github.Issue, Error>;
+    queryParams: GetIssueQueryParams;
+  }) => UseQueryResult<GithubIssue, Error>;
 };
 
 export const useIssueApi = (): UseIssueApi => {
   return {
-    getIssues: (args: {
-      queryParams: {
-        owner: string;
-        repo: string;
-        offset: number;
-        limit: number;
-      };
-    }) =>
-      useQuery<Github.Issue[], Error>({
-        queryKey: ['issues', args.queryParams.offset, args.queryParams.limit],
-        queryFn: () => githubIssueApiRequest.getIssues(args),
+    getIssues: ({queryParams}) =>
+      useQuery<GithubIssue[], Error>({
+        queryKey: [
+          'issues',
+          queryParams.owner,
+          queryParams.owner,
+          queryParams.offset,
+          queryParams.limit,
+        ],
+        queryFn: () => githubIssueApiRequest.getIssues({queryParams}),
         staleTime: 20000, // TODO
         keepPreviousData: true,
       }),
 
-    getIssue: (args: {
-      queryParams: {
-        owner: string;
-        repo: string;
-        issueNumStr: string;
-      };
-    }) =>
-      useQuery<Github.Issue, Error>({
-        queryKey: ['issue', args.queryParams.issueNumStr],
-        queryFn: () => githubIssueApiRequest.getIssue(args),
+    getIssue: ({queryParams}) =>
+      useQuery<GithubIssue, Error>({
+        queryKey: [
+          'issue',
+          queryParams.owner,
+          queryParams.repo,
+          queryParams.issueNumStr,
+        ],
+        queryFn: () => githubIssueApiRequest.getIssue({queryParams}),
       }),
   };
 };

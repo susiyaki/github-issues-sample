@@ -1,6 +1,16 @@
-import {GithubIssueEndpoint} from './endpoint.d';
+type GetIssuesQueryParams = {
+  owner: string;
+  repo: string;
+  offset: number;
+  limit: number;
+};
+type GetIssueQueryParams = {
+  owner: string;
+  repo: string;
+  issueNumStr: string;
+};
 
-export type {GithubIssueEndpoint};
+export type {GetIssuesQueryParams, GetIssueQueryParams};
 
 export const githubIssueEndpoint = {
   getIssues: ({
@@ -8,13 +18,9 @@ export const githubIssueEndpoint = {
     repo,
     offset,
     limit,
-  }: GithubIssueEndpoint.GetIssues): string =>
+  }: GetIssuesQueryParams): string =>
     `repos/${orgs}/${repo}/issues?page=${offset}&per_page=${limit}`,
 
-  getIssue: ({
-    owner: orgs,
-    repo,
-    issueNumStr,
-  }: GithubIssueEndpoint.GetIssue): string =>
+  getIssue: ({owner: orgs, repo, issueNumStr}: GetIssueQueryParams): string =>
     `repos/${orgs}/${repo}/issues/${issueNumStr}`,
 };
