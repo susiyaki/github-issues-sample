@@ -25,5 +25,6 @@
       "@config": ["src/config"],
       "@config/*": ["src/config/*"]
     }
-  }
+  },
+  "exclude": ["src/**/*.test.ts"]
 }

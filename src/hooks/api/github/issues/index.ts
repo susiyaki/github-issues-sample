@@ -1,9 +1,9 @@
 import {useQuery, UseQueryResult} from 'react-query';
 import {ApiResponse} from '@types';
-import {githubIssueApiRequest} from './client';
+import {githubIssueApiRequest} from './request';
 import {GetIssuesQueryParams, GetIssueQueryParams} from './endpoint';
 
-type UseIssueApi = {
+type UseIssuesApi = {
   getIssues: (args: {
     queryParams: GetIssuesQueryParams;
   }) => UseQueryResult<ApiResponse.Github.Issue[], Error>;
@@ -13,7 +13,7 @@ type UseIssueApi = {
   }) => UseQueryResult<ApiResponse.Github.Issue, Error>;
 };
 
-export const useIssueApi = (): UseIssueApi => {
+export const useIssuesApi = (): UseIssuesApi => {
   return {
     getIssues: ({queryParams}) =>
       useQuery<ApiResponse.Github.Issue[], Error>({

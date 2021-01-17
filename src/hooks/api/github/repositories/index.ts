@@ -1,15 +1,15 @@
 import {useQuery, UseQueryResult} from 'react-query';
 import {ApiResponse} from '@types';
-import {githubRepositoryApiRequest} from './client';
+import {githubRepositoryApiRequest} from './request';
 import {GetRepositoryQueryParams} from './endpoint';
 
-type UseRepositoryApi = {
+type UseRepositoriesApi = {
   getRepository: (args: {
     queryParams: GetRepositoryQueryParams;
   }) => UseQueryResult<ApiResponse.Github.TemplateRepository, Error>;
 };
 
-export const useRepositoryApi = (): UseRepositoryApi => {
+export const useRepositoriesApi = (): UseRepositoriesApi => {
   return {
     getRepository: (args: {queryParams: {owner: string; repo: string}}) =>
       useQuery<ApiResponse.Github.TemplateRepository, Error>({

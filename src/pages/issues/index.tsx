@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {route} from '../../config/route';
-import {useIssueApi, useRepositoryApi} from '@hooks';
+import {useIssuesApi, useRepositoriesApi} from '@hooks';
 
 type Props = Record<string, unknown>;
 
@@ -11,8 +11,8 @@ const owner = 'facebook';
 const repo = 'react';
 
 export const Issues: React.FC<Props> = () => {
-  const {getRepository} = useRepositoryApi();
-  const {getIssues} = useIssueApi();
+  const {getRepository} = useRepositoriesApi();
+  const {getIssues} = useIssuesApi();
   const [page, setPage] = useState<number>(0);
 
   const {data: repository} = getRepository({
