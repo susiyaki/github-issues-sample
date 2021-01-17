@@ -1,7 +1,7 @@
 import {useQuery, UseQueryResult} from 'react-query';
-import {githubRepositoryApiRequest} from '@hooks/api/repository/client';
-import {GetRepositoryQueryParams} from '@hooks/api/repository/endpoint';
 import {ApiResponse} from '@types';
+import {githubRepositoryApiRequest} from './client';
+import {GetRepositoryQueryParams} from './endpoint';
 
 type UseRepositoryApi = {
   getRepository: (args: {

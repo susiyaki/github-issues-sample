@@ -1,10 +1,7 @@
 import {useQuery, UseQueryResult} from 'react-query';
-import {githubIssueApiRequest} from '@hooks/api/issue/client';
-import {
-  GetIssuesQueryParams,
-  GetIssueQueryParams,
-} from '@hooks/api/issue/endpoint';
 import {ApiResponse} from '@types';
+import {githubIssueApiRequest} from './client';
+import {GetIssuesQueryParams, GetIssueQueryParams} from './endpoint';
 
 type UseIssueApi = {
   getIssues: (args: {

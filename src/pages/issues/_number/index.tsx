@@ -1,6 +1,6 @@
 import React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
-import {useIssueApi} from '../../../hooks/api/issue';
+import {useIssueApi} from '@hooks';
 
 type Props = Record<string, unknown> & RouteComponentProps<{number: string}>;
 

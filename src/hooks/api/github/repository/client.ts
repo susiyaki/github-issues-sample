@@ -1,10 +1,6 @@
-import axios from 'axios';
-import {githubRepositoryEndpoint} from '@hooks/api/repository/endpoint';
 import {ApiResponse} from '@types';
-
-export const apiClient = axios.create({
-  baseURL: 'https://api.github.com',
-});
+import {githubRepositoryEndpoint} from './endpoint';
+import {apiClient} from '../apiClient';
 
 export const githubRepositoryApiRequest = {
   getRepository: ({

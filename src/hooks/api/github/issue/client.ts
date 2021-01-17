@@ -1,14 +1,10 @@
-import axios from 'axios';
+import {ApiResponse} from '@types';
 import {
   GetIssueQueryParams,
   GetIssuesQueryParams,
   githubIssueEndpoint,
-} from '@hooks/api/issue/endpoint';
-import {ApiResponse} from '@types';
-
-export const apiClient = axios.create({
-  baseURL: 'https://api.github.com',
-});
+} from './endpoint';
+import {apiClient} from '../apiClient';
 
 export const githubIssueApiRequest = {
   getIssues: ({

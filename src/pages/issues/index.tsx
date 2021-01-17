@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {route} from '../../config/route';
-import {useIssueApi} from '../../hooks/api/issue';
-import {useRepositoryApi} from '../../hooks/api/repository';
+import {useIssueApi, useRepositoryApi} from '@hooks';
 
 type Props = Record<string, unknown>;
 
