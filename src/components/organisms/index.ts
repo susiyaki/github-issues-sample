@@ -1,2 +1,2 @@
 export * from './IssueList';
-export * from './IssueListItem';
+export * from './Header';

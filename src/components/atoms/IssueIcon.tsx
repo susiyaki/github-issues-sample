@@ -2,7 +2,7 @@ import React from 'react';
 import {GoIssueOpened, GoIssueClosed} from 'react-icons/go';
 
 type Props = {
-  state: 'open' | 'closed';
+  state: 'open' | 'closed' | 'all';
 };
 
 export const IssueIcon: React.FC<Props> = ({state}) =>

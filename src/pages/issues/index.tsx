@@ -3,6 +3,8 @@ import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {ApiResponse} from '@types';
+import {Box, Flex, Heading} from '@primer/components';
+import {BiBookBookmark} from 'react-icons/bi';
 
 type Props = Record<string, unknown>;
 
@@ -14,7 +16,7 @@ const repo = 'react';
 export const Issues: React.FC<Props> = () => {
   const {getIssues} = useGithubIssuesApi();
   const {searchIssues} = useGithubSearchApi();
-  const [issues, setIssuus] = useState<ApiResponse.Github.Issue[] | null>(null);
+  const [issues, setIssuus] = useState<ApiResponse.Github.Issue[]>([]);
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<{state: 'all' | 'open' | 'closed'}>({
     state: 'open',
@@ -71,41 +73,32 @@ export const Issues: React.FC<Props> = () => {
     [page],
   );
 
-  if (!issues && status === 'loading') {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
-  }
-  console.log(issues);
-
-  if (!issues) {
-    return (
-      <div>
-        <p>faild to fetch data</p>
-      </div>
-    );
+  if (issues.length === 0 && status === 'loading') {
+    return <p>load</p>;
   }
 
   return (
-    <div>
-      <p onClick={() => handleChangeFilter({state: 'open'})}>
-        open: {openIssues ? openIssues.total_count : '?'}
-      </p>
-      <p onClick={() => handleChangeFilter({state: 'closed'})}>
-        closed: {closedIssues ? closedIssues.total_count : '?'}
-      </p>
-      <p onClick={() => handleChangeFilter({state: 'all'})}>
-        reset state filter
-      </p>
-      <IssueList issues={issues} />
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px">
+      <Heading fontSize={20} marginBottom="16px">
+        <Flex alignItems="center">
+          <BiBookBookmark />
+          &nbsp;
+          {owner}/{repo}
+        </Flex>
+      </Heading>
+      <IssueList
+        issues={issues}
+        filter={filter}
+        openIssuesCount={openIssues?.total_count}
+        closedIssuesCount={closedIssues?.total_count}
+        handleChangeFilter={handleChangeFilter}
+      />
       <Pagination
         currentPage={page}
         perPage={PER_PAGE}
         totalCount={totalCount}
         onPageChange={handlePageChange}
       />
-    </div>
+    </Box>
   );
 };
