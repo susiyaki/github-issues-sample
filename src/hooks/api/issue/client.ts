@@ -3,8 +3,8 @@ import {
   GetIssueQueryParams,
   GetIssuesQueryParams,
   githubIssueEndpoint,
-} from './endpoint';
-import {GithubIssue} from '@types/github';
+} from '@hooks/api/issue/endpoint';
+import {ApiResponse} from '@types';
 
 export const apiClient = axios.create({
   baseURL: 'https://api.github.com',
@@ -15,17 +15,19 @@ export const githubIssueApiRequest = {
     queryParams,
   }: {
     queryParams: GetIssuesQueryParams;
-  }): Promise<GithubIssue[]> =>
+  }): Promise<ApiResponse.Github.Issue[]> =>
     apiClient
-      .get<GithubIssue[]>(githubIssueEndpoint.getIssues(queryParams))
+      .get<ApiResponse.Github.Issue[]>(
+        githubIssueEndpoint.getIssues(queryParams),
+      )
       .then((res) => res.data),
 
   getIssue: ({
     queryParams,
   }: {
     queryParams: GetIssueQueryParams;
-  }): Promise<GithubIssue> =>
+  }): Promise<ApiResponse.Github.Issue> =>
     apiClient
-      .get<GithubIssue>(githubIssueEndpoint.getIssue(queryParams))
+      .get<ApiResponse.Github.Issue>(githubIssueEndpoint.getIssue(queryParams))
       .then((res) => res.data),
 };

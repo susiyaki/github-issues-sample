@@ -32,7 +32,12 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
-    'no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      2,
+      {
+        args: 'none',
+      },
+    ],
     'react/prop-types': 'off',
     'prettier/prettier': 'warn',
   },

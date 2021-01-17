@@ -2,12 +2,12 @@ const plugins = [
   [
     require.resolve('babel-plugin-module-resolver'),
     {
-      root: ['./src/'],
+      root: ['./'],
       alias: {
-        '@types': './types',
-        '@config': './config',
-        '@hooks': './hooks',
-        '@pages': './pages',
+        '@types': './src/types',
+        '@config': './src/config',
+        '@hooks': './src/hooks',
+        '@pages': './src/pages',
       },
     },
   ],

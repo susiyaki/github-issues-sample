@@ -4,22 +4,22 @@ import {
   GetIssuesQueryParams,
   GetIssueQueryParams,
 } from '@hooks/api/issue/endpoint';
-import {GithubIssue} from '@types/github';
+import {ApiResponse} from '@types';
 
 type UseIssueApi = {
   getIssues: (args: {
     queryParams: GetIssuesQueryParams;
-  }) => UseQueryResult<GithubIssue[], Error>;
+  }) => UseQueryResult<ApiResponse.Github.Issue[], Error>;
 
   getIssue: (args: {
     queryParams: GetIssueQueryParams;
-  }) => UseQueryResult<GithubIssue, Error>;
+  }) => UseQueryResult<ApiResponse.Github.Issue, Error>;
 };
 
 export const useIssueApi = (): UseIssueApi => {
   return {
     getIssues: ({queryParams}) =>
-      useQuery<GithubIssue[], Error>({
+      useQuery<ApiResponse.Github.Issue[], Error>({
         queryKey: [
           'issues',
           queryParams.owner,
@@ -33,7 +33,7 @@ export const useIssueApi = (): UseIssueApi => {
       }),
 
     getIssue: ({queryParams}) =>
-      useQuery<GithubIssue, Error>({
+      useQuery<ApiResponse.Github.Issue, Error>({
         queryKey: [
           'issue',
           queryParams.owner,
