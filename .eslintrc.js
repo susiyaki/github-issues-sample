@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['jest'],
   env: {
     'jest/globals': true,
+    node: true,
     browser: true,
   },
   rules: {
@@ -32,7 +33,15 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
-    'no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      1,
+      {
+        args: 'none',
+      },
+    ],
+    'no-unused-vars': 'off',
+    'react/prop-types': 'off',
+    'prettier/prettier': 'warn',
   },
   overrides: [
     {
@@ -43,4 +52,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ['*/**/*.test.ts'],
 };
