@@ -1,4 +1,4 @@
-import {useQuery, UseQueryResult} from 'react-query';
+import {QueryObserverOptions, useQuery, UseQueryResult} from 'react-query';
 import {ApiResponse} from '@types';
 import {githubIssueApiRequest} from './request';
 import {GetIssuesQueryParams, GetIssueQueryParams} from './endpoint';
@@ -6,17 +6,19 @@ import {GetIssuesQueryParams, GetIssueQueryParams} from './endpoint';
 type UseIssuesApi = {
   getIssues: (args: {
     queryParams: GetIssuesQueryParams;
+    options?: QueryObserverOptions<ApiResponse.Github.Issue[], Error>;
   }) => UseQueryResult<ApiResponse.Github.Issue[], Error>;
 
   getIssue: (args: {
     queryParams: GetIssueQueryParams;
+    options?: QueryObserverOptions<ApiResponse.Github.Issue, Error>;
   }) => UseQueryResult<ApiResponse.Github.Issue, Error>;
 };
 
-export const useIssuesApi = (): UseIssuesApi => {
+export const useGithubIssuesApi = (): UseIssuesApi => {
   return {
-    getIssues: ({queryParams}) =>
-      useQuery<ApiResponse.Github.Issue[], Error>({
+    getIssues: ({queryParams, options}) =>
+      useQuery({
         queryKey: [
           'issues',
           queryParams.owner,
@@ -25,12 +27,11 @@ export const useIssuesApi = (): UseIssuesApi => {
           queryParams.limit,
         ],
         queryFn: () => githubIssueApiRequest.getIssues({queryParams}),
-        staleTime: 20000, // TODO
-        keepPreviousData: true,
+        ...options,
       }),
 
-    getIssue: ({queryParams}) =>
-      useQuery<ApiResponse.Github.Issue, Error>({
+    getIssue: ({queryParams, options}) =>
+      useQuery({
         queryKey: [
           'issue',
           queryParams.owner,
@@ -38,6 +39,7 @@ export const useIssuesApi = (): UseIssuesApi => {
           queryParams.issueNumStr,
         ],
         queryFn: () => githubIssueApiRequest.getIssue({queryParams}),
+        ...options,
       }),
   };
 };

@@ -18,4 +18,7 @@ export const githubIssueEndpoint = {
 
   getIssue: ({owner, repo, issueNumStr}: GetIssueQueryParams): string =>
     `repos/${owner}/${repo}/issues/${issueNumStr}`,
+
+  openIssues: ({owner, repo, issueNumStr}: GetIssueQueryParams): string =>
+    `repos/${owner}/${repo}/issues/${issueNumStr}`,
 };

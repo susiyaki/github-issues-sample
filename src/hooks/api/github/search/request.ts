@@ -1,20 +1,17 @@
 import {ApiResponse} from '@types';
-import {
-  githubIssuesAndPullRequestsEndpoint,
-  SearchIssuesAndPullRequestsQueryParams,
-} from './endpoint';
+import {githubSearchEndpoint, SearchIssuesQueryParams} from './endpoint';
 import {apiClient} from '../apiClient';
 
-export const githubIssuesAndPullRequestsApiRequest = {
+export const githubSearchApiRequest = {
   // NOTE: https://docs.github.com/en/rest/reference/search#search-issues-and-pull-requests
-  search: ({
+  searchIssues: ({
     queryParams,
   }: {
-    queryParams: SearchIssuesAndPullRequestsQueryParams;
+    queryParams: SearchIssuesQueryParams;
   }): Promise<ApiResponse.Github.SearchResult> =>
     apiClient
       .get<ApiResponse.Github.SearchResult>(
-        githubIssuesAndPullRequestsEndpoint.search(queryParams),
+        githubSearchEndpoint.searchIssues(queryParams),
       )
       .then((res) => res.data),
 };

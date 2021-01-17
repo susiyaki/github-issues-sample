@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {useIssuesApi, useIssuesAndPullRequestApi} from '@hooks';
+import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {route} from '@config/route';
 
 type Props = Record<string, unknown>;
@@ -11,25 +11,27 @@ const owner = 'facebook';
 const repo = 'react';
 
 export const Issues: React.FC<Props> = () => {
-  const {getIssues} = useIssuesApi();
-  const {search} = useIssuesAndPullRequestApi();
+  const {getIssues} = useGithubIssuesApi();
+  const {searchIssues} = useGithubSearchApi();
   const [page, setPage] = useState<number>(0);
+  const [filter, setFilter] = useState<{state: 'open' | 'closed'}>({
+    state: 'open',
+  });
 
-  const {data: openIssues} = search({
+  const {data: openIssues} = searchIssues({
     queryParams: {
       repo: `${owner}/${repo}`,
-      type: 'issue',
       state: 'open',
     },
+    options: {refetchOnMount: false},
   });
-  const {data: closedIssues} = search({
+  const {data: closedIssues} = searchIssues({
     queryParams: {
       repo: `${owner}/${repo}`,
-      type: 'issue',
       state: 'closed',
     },
+    options: {refetchOnMount: false},
   });
-  console.log(openIssues?.total_count, closedIssues?.total_count);
 
   const {data: issues, status} = getIssues({
     queryParams: {
@@ -40,6 +42,10 @@ export const Issues: React.FC<Props> = () => {
     },
   });
 
+  const listData = useMemo(() => {
+    return issues || [];
+  }, [issues, filter]);
+
   if (status === 'loading') {
     return (
       <div>
@@ -48,18 +54,30 @@ export const Issues: React.FC<Props> = () => {
     );
   }
 
+  if (!issues) {
+    return (
+      <div>
+        <p>faild to fetch data</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {issues?.map((issue) => (
-        <Link key={issue.id} to={route.showIssue(issue.number)}>
-          <p>{issue.id}</p>
-          <p>{issue.title}</p>
-          <div style={{border: '1px solid #000', width: '100%'}} />
-        </Link>
-      ))}
-      <div style={{display: 'flex'}}>
-        <p onClick={() => setPage((v) => v - 1)}>prev</p>
-        <p onClick={() => setPage((v) => v + 1)}>next</p>
+      <p>open: {openIssues ? openIssues.total_count : '?'}</p>
+      <p>closed: {closedIssues ? closedIssues.total_count : '?'}</p>
+      <div>
+        {listData.map((d) => (
+          <Link key={d.id} to={route.showIssue(d.number)}>
+            <p>{d.id}</p>
+            <p>{d.title}</p>
+            <div style={{border: '1px solid #000', width: '100%'}} />
+          </Link>
+        ))}
+        <div style={{display: 'flex'}}>
+          <p onClick={() => console.log('prev')}>prev</p>
+          <p onClick={() => console.log('next')}>next</p>
+        </div>
       </div>
     </div>
   );

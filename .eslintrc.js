@@ -33,11 +33,12 @@ module.exports = {
     'jest/valid-expect': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     '@typescript-eslint/no-unused-vars': [
-      2,
+      1,
       {
         args: 'none',
       },
     ],
+    'no-unused-vars': 'off',
     'react/prop-types': 'off',
     'prettier/prettier': 'warn',
   },

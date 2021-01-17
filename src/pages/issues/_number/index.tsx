@@ -1,6 +1,6 @@
 import React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
-import {useIssuesApi} from '@hooks';
+import {useGithubIssuesApi} from '@hooks';
 
 type Props = Record<string, unknown> & RouteComponentProps<{number: string}>;
 
@@ -9,7 +9,7 @@ const owner = 'facebook';
 const repo = 'react';
 
 export const Issue: React.FC<Props> = (props) => {
-  const {getIssue} = useIssuesApi();
+  const {getIssue} = useGithubIssuesApi();
   const issueNumStr = props.match.params.number;
   const {data: issue, status} = getIssue({
     queryParams: {owner, repo, issueNumStr},
