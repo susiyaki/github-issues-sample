@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/github-issues-sample/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/github-issues-sample/static/js/main.9aabbfb2.chunk.js",
-    "main.js.map": "/github-issues-sample/static/js/main.9aabbfb2.chunk.js.map",
-    "runtime-main.js": "/github-issues-sample/static/js/runtime-main.601dedb0.js",
-    "runtime-main.js.map": "/github-issues-sample/static/js/runtime-main.601dedb0.js.map",
-    "static/js/2.a4473eae.chunk.js": "/github-issues-sample/static/js/2.a4473eae.chunk.js",
-    "static/js/2.a4473eae.chunk.js.map": "/github-issues-sample/static/js/2.a4473eae.chunk.js.map",
-    "static/js/3.d10c5041.chunk.js": "/github-issues-sample/static/js/3.d10c5041.chunk.js",
-    "static/js/3.d10c5041.chunk.js.map": "/github-issues-sample/static/js/3.d10c5041.chunk.js.map",
+    "main.css": "/github-issues-sample/static/css/main.798e73ed.chunk.css",
+    "main.js": "/github-issues-sample/static/js/main.591f4dbc.chunk.js",
+    "main.js.map": "/github-issues-sample/static/js/main.591f4dbc.chunk.js.map",
+    "runtime-main.js": "/github-issues-sample/static/js/runtime-main.4260ae71.js",
+    "runtime-main.js.map": "/github-issues-sample/static/js/runtime-main.4260ae71.js.map",
+    "static/js/2.5201617a.chunk.js": "/github-issues-sample/static/js/2.5201617a.chunk.js",
+    "static/js/2.5201617a.chunk.js.map": "/github-issues-sample/static/js/2.5201617a.chunk.js.map",
+    "static/js/3.9d0adfa1.chunk.js": "/github-issues-sample/static/js/3.9d0adfa1.chunk.js",
+    "static/js/3.9d0adfa1.chunk.js.map": "/github-issues-sample/static/js/3.9d0adfa1.chunk.js.map",
     "index.html": "/github-issues-sample/index.html",
-    "static/css/main.8c8b27cf.chunk.css.map": "/github-issues-sample/static/css/main.8c8b27cf.chunk.css.map",
-    "static/js/2.a4473eae.chunk.js.LICENSE.txt": "/github-issues-sample/static/js/2.a4473eae.chunk.js.LICENSE.txt"
+    "static/css/main.798e73ed.chunk.css.map": "/github-issues-sample/static/css/main.798e73ed.chunk.css.map",
+    "static/js/2.5201617a.chunk.js.LICENSE.txt": "/github-issues-sample/static/js/2.5201617a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.601dedb0.js",
-    "static/js/2.a4473eae.chunk.js",
-    "static/css/main.8c8b27cf.chunk.css",
-    "static/js/main.9aabbfb2.chunk.js"
+    "static/js/runtime-main.4260ae71.js",
+    "static/js/2.5201617a.chunk.js",
+    "static/css/main.798e73ed.chunk.css",
+    "static/js/main.591f4dbc.chunk.js"
   ]
 }
