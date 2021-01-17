@@ -34,7 +34,7 @@ export namespace ApiResponse {
       title: string;
       user: User;
       labels: any[];
-      state: string;
+      state: 'open' | 'closed';
       locked: boolean;
       assignee?: any;
       assignees: any[];

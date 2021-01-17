@@ -1,9 +1,11 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import ReactPaginate from 'react-paginate';
-import {Link} from 'react-router-dom';
+import {OverlayIndicator} from '@components/atoms';
+import {Pagination} from '@components/molecules';
+import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
-import {route} from '@config/route';
 import {ApiResponse} from '@types';
+import {Box, Flex, Heading} from '@primer/components';
+import {BiBookBookmark} from 'react-icons/bi';
 
 type Props = Record<string, unknown>;
 
@@ -15,7 +17,7 @@ const repo = 'react';
 export const Issues: React.FC<Props> = () => {
   const {getIssues} = useGithubIssuesApi();
   const {searchIssues} = useGithubSearchApi();
-  const [issues, setIssuus] = useState<ApiResponse.Github.Issue[] | null>(null);
+  const [issues, setIssuus] = useState<ApiResponse.Github.Issue[]>([]);
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<{state: 'all' | 'open' | 'closed'}>({
     state: 'open',
@@ -48,15 +50,15 @@ export const Issues: React.FC<Props> = () => {
     },
   });
 
-  const totalPageCount = useMemo(() => {
-    if (!openIssues || !closedIssues) return 0;
+  const totalCount = useMemo(() => {
+    if (!openIssues || !closedIssues) return 1;
 
     if (filter.state === 'open') {
-      return openIssues.total_count / PER_PAGE;
+      return openIssues.total_count;
     } else if (filter.state === 'closed') {
-      return closedIssues.total_count / PER_PAGE;
+      return closedIssues.total_count;
     } else {
-      return openIssues.total_count + closedIssues.total_count / PER_PAGE;
+      return openIssues.total_count + closedIssues.total_count;
     }
   }, [openIssues, closedIssues, filter.state]);
 
@@ -65,53 +67,39 @@ export const Issues: React.FC<Props> = () => {
   }, []);
 
   const handlePageChange = useCallback(
-    ({selected}) => {
-      setPage(selected + 1);
+    (e, page) => {
+      e.preventDefault();
+      setPage(page);
     },
     [page],
   );
 
-  if (!issues && status === 'loading') {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
-  }
-
-  if (!issues) {
-    return (
-      <div>
-        <p>faild to fetch data</p>
-      </div>
-    );
+  if (issues.length === 0 && status === 'loading') {
+    return <OverlayIndicator isVisible={true} />;
   }
 
   return (
-    <div>
-      <p onClick={() => handleChangeFilter({state: 'open'})}>
-        open: {openIssues ? openIssues.total_count : '?'}
-      </p>
-      <p onClick={() => handleChangeFilter({state: 'closed'})}>
-        closed: {closedIssues ? closedIssues.total_count : '?'}
-      </p>
-      <p onClick={() => handleChangeFilter({state: 'all'})}>
-        reset state filter
-      </p>
-      {issues.map((issue) => (
-        <Link key={issue.id} to={route.showIssue(issue.number)}>
-          <p>{issue.id}</p>
-          <p>{issue.title}</p>
-          <p>{issue.state}</p>
-          <div style={{border: '1px solid #000', width: '100%'}} />
-        </Link>
-      ))}
-      <ReactPaginate
-        pageCount={totalPageCount}
-        pageRangeDisplayed={4}
-        marginPagesDisplayed={1}
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px">
+      <Heading fontSize={20} marginBottom="16px">
+        <Flex alignItems="center">
+          <BiBookBookmark />
+          &nbsp;
+          {owner}/{repo}
+        </Flex>
+      </Heading>
+      <IssueList
+        issues={issues}
+        filter={filter}
+        openIssuesCount={openIssues?.total_count}
+        closedIssuesCount={closedIssues?.total_count}
+        handleChangeFilter={handleChangeFilter}
+      />
+      <Pagination
+        currentPage={page}
+        perPage={PER_PAGE}
+        totalCount={totalCount}
         onPageChange={handlePageChange}
       />
-    </div>
+    </Box>
   );
 };

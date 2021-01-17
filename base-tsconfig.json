@@ -7,7 +7,13 @@
       "@pages": ["src/pages"],
       "@pages/*": ["src/pages/*"],
       "@config": ["src/config"],
-      "@config/*": ["src/config/*"]
+      "@config/*": ["src/config/*"],
+      "@lib": ["src/lib"],
+      "@lib/*": ["src/lib/*"],
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"],
+      "@assets": ["src/assets"],
+      "@assets/*": ["src/assets/*"]
     }
   }
 }
