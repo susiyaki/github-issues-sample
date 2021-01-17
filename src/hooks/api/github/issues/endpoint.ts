@@ -1,8 +1,9 @@
 type GetIssuesQueryParams = {
   owner: string;
   repo: string;
-  offset: number;
-  limit: number;
+  page: number;
+  per_page: number;
+  state?: 'all' | 'open' | 'closed';
 };
 type GetIssueQueryParams = {
   owner: string;
@@ -13,8 +14,16 @@ type GetIssueQueryParams = {
 export type {GetIssuesQueryParams, GetIssueQueryParams};
 
 export const githubIssueEndpoint = {
-  getIssues: ({owner, repo, offset, limit}: GetIssuesQueryParams): string =>
-    `repos/${owner}/${repo}/issues?page=${offset}&per_page=${limit}`,
+  getIssues: ({
+    owner,
+    repo,
+    page,
+    per_page,
+    state,
+  }: GetIssuesQueryParams): string =>
+    `repos/${owner}/${repo}/issues?page=${page}&per_page=${per_page}&state=${
+      state || 'all'
+    }`,
 
   getIssue: ({owner, repo, issueNumStr}: GetIssueQueryParams): string =>
     `repos/${owner}/${repo}/issues/${issueNumStr}`,

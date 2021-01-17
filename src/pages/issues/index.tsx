@@ -1,7 +1,9 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
+import ReactPaginate from 'react-paginate';
 import {Link} from 'react-router-dom';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {route} from '@config/route';
+import {ApiResponse} from '@types';
 
 type Props = Record<string, unknown>;
 
@@ -13,8 +15,9 @@ const repo = 'react';
 export const Issues: React.FC<Props> = () => {
   const {getIssues} = useGithubIssuesApi();
   const {searchIssues} = useGithubSearchApi();
-  const [page, setPage] = useState<number>(0);
-  const [filter, setFilter] = useState<{state: 'open' | 'closed'}>({
+  const [issues, setIssuus] = useState<ApiResponse.Github.Issue[] | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [filter, setFilter] = useState<{state: 'all' | 'open' | 'closed'}>({
     state: 'open',
   });
 
@@ -32,21 +35,43 @@ export const Issues: React.FC<Props> = () => {
     },
     options: {refetchOnMount: false},
   });
-
-  const {data: issues, status} = getIssues({
+  const {status} = getIssues({
     queryParams: {
       owner,
       repo,
-      offset: page * PER_PAGE,
-      limit: PER_PAGE,
+      page,
+      per_page: PER_PAGE,
+      state: filter.state,
+    },
+    options: {
+      onSuccess: (res) => setIssuus(res),
     },
   });
 
-  const listData = useMemo(() => {
-    return issues || [];
-  }, [issues, filter]);
+  const totalPageCount = useMemo(() => {
+    if (!openIssues || !closedIssues) return 0;
 
-  if (status === 'loading') {
+    if (filter.state === 'open') {
+      return openIssues.total_count / PER_PAGE;
+    } else if (filter.state === 'closed') {
+      return closedIssues.total_count / PER_PAGE;
+    } else {
+      return openIssues.total_count + closedIssues.total_count / PER_PAGE;
+    }
+  }, [openIssues, closedIssues, filter.state]);
+
+  const handleChangeFilter = useCallback(({state}) => {
+    setFilter((prev) => ({...prev, state}));
+  }, []);
+
+  const handlePageChange = useCallback(
+    ({selected}) => {
+      setPage(selected + 1);
+    },
+    [page],
+  );
+
+  if (!issues && status === 'loading') {
     return (
       <div>
         <p>loading...</p>
@@ -64,21 +89,29 @@ export const Issues: React.FC<Props> = () => {
 
   return (
     <div>
-      <p>open: {openIssues ? openIssues.total_count : '?'}</p>
-      <p>closed: {closedIssues ? closedIssues.total_count : '?'}</p>
-      <div>
-        {listData.map((d) => (
-          <Link key={d.id} to={route.showIssue(d.number)}>
-            <p>{d.id}</p>
-            <p>{d.title}</p>
-            <div style={{border: '1px solid #000', width: '100%'}} />
-          </Link>
-        ))}
-        <div style={{display: 'flex'}}>
-          <p onClick={() => console.log('prev')}>prev</p>
-          <p onClick={() => console.log('next')}>next</p>
-        </div>
-      </div>
+      <p onClick={() => handleChangeFilter({state: 'open'})}>
+        open: {openIssues ? openIssues.total_count : '?'}
+      </p>
+      <p onClick={() => handleChangeFilter({state: 'closed'})}>
+        closed: {closedIssues ? closedIssues.total_count : '?'}
+      </p>
+      <p onClick={() => handleChangeFilter({state: 'all'})}>
+        reset state filter
+      </p>
+      {issues.map((issue) => (
+        <Link key={issue.id} to={route.showIssue(issue.number)}>
+          <p>{issue.id}</p>
+          <p>{issue.title}</p>
+          <p>{issue.state}</p>
+          <div style={{border: '1px solid #000', width: '100%'}} />
+        </Link>
+      ))}
+      <ReactPaginate
+        pageCount={totalPageCount}
+        pageRangeDisplayed={4}
+        marginPagesDisplayed={1}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

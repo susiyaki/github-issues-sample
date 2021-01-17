@@ -1,6 +1,6 @@
 import axios from 'axios';
 export const apiClient = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: 'https://api.github.com/',
 });
 
 apiClient.interceptors.request.use((req) => {

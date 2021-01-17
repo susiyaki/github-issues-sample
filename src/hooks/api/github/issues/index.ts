@@ -22,9 +22,10 @@ export const useGithubIssuesApi = (): UseIssuesApi => {
         queryKey: [
           'issues',
           queryParams.owner,
-          queryParams.owner,
-          queryParams.offset,
-          queryParams.limit,
+          queryParams.repo,
+          queryParams.page,
+          queryParams.per_page,
+          queryParams.state,
         ],
         queryFn: () => githubIssueApiRequest.getIssues({queryParams}),
         ...options,
