@@ -52,4 +52,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
       - name: Run Jest
-        run: yarn test
+        run: yarn jest
