@@ -28,7 +28,7 @@ export const ToggleInput: React.FC<Props> = ({
     if (mode === 'dependent') {
       return typeof value === 'string' && value.length === 0;
     } else {
-      return typeof value === 'string' && v.length === 0;
+      return typeof v === 'string' && v.length === 0;
     }
   }, [mode, open, v, value]);
 
