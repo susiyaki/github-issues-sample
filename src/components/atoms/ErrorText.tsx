@@ -11,7 +11,7 @@ export const ErrorText: React.FC<Props> = ({isVisible = true}) => {
   return (
     <Flex justifyContent="center" alignItems="center">
       <CgGhostCharacter size={56} />
-      <Text>An Error Occured. Please try again later.</Text>
+      <Text>An Error Occured. Please try again.</Text>
     </Flex>
   );
 };
