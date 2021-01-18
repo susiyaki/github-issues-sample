@@ -63,6 +63,7 @@ export const Issues: React.FC<Props> = () => {
   }, [openIssues, closedIssues, filter.state]);
 
   const handleChangeFilter = useCallback(({state}) => {
+    setPage(1);
     setFilter((prev) => ({...prev, state}));
   }, []);
 
