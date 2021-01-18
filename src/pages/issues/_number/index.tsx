@@ -21,6 +21,7 @@ export const Issue: React.FC<Props> = () => {
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
   useEffect(() => {
+    if (owner && repo) return;
     push({
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,

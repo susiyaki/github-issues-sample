@@ -30,6 +30,7 @@ export const Issues: React.FC<Props> = () => {
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
   useEffect(() => {
+    if (owner && repo) return;
     push({
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
@@ -88,6 +89,16 @@ export const Issues: React.FC<Props> = () => {
     [page],
   );
 
+  const handleClickIssueListItem = useCallback(
+    (issue: ApiResponse.Github.Issue) => {
+      push({
+        pathname: route.showIssue(issue.number),
+        search: `?owner=${owner}&repo=${repo}`,
+      });
+    },
+    [owner, repo],
+  );
+
   if (issues.length === 0 && status === 'loading') {
     return <OverlayIndicator isVisible={true} />;
   }
@@ -107,6 +118,7 @@ export const Issues: React.FC<Props> = () => {
         openIssuesCount={openIssues?.total_count}
         closedIssuesCount={closedIssues?.total_count}
         handleChangeFilter={handleChangeFilter}
+        handleClickIssueListItem={handleClickIssueListItem}
       />
       <Pagination
         currentPage={page}
