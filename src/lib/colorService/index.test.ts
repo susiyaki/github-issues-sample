@@ -25,7 +25,7 @@ describe('【Lib】colorService', () => {
     test('白 rgb(255,255,255) を渡すと255が返る', () => {
       const actual = colorService.getLuminance([255, 255, 255]);
 
-      expect(actual).toBeGreaterThan(255);
+      expect(actual).toStrictEqual(255);
     });
     test('黒 rgb(0,0,0) を渡すと0が返る', () => {
       const actual = colorService.getLuminance([0, 0, 0]);
