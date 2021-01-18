@@ -44,7 +44,7 @@ export const IssueFilterButton: React.FC<Props> = ({
             />
           )}
           &nbsp;
-          {count || '?'} {type.slice(0, 1).toUpperCase()}
+          {count === undefined ? '?' : count} {type.slice(0, 1).toUpperCase()}
           {type.slice(1)}
         </Flex>
       </Link>
