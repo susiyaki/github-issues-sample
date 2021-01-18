@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import dayjs from 'dayjs';
 import {
   Avatar,
   PointerBox,
@@ -8,15 +7,19 @@ import {
   Flex,
   Heading,
   Text,
-  Tooltip,
 } from '@primer/components';
-import {MarkdownViewer, IssueIcon} from '@components/atoms';
+import {
+  PastTimeText,
+  MarkdownViewer,
+  IssueIcon,
+  OverlayIndicator,
+  ErrorText,
+} from '@components/atoms';
 import {BiBookBookmark} from 'react-icons/bi';
 import {useLocation, useRouteMatch, useHistory} from 'react-router-dom';
 import {useGithubIssuesApi} from '@hooks';
 import {parseQueryString} from '@lib/parseQueryString';
 import {route} from '@config/route';
-import {pastTimeFormat} from '@lib/pastTimeFormat';
 
 type Props = Record<string, unknown>;
 const DEFAULT_OWNER = 'facebook';
@@ -42,7 +45,7 @@ export const Issue: React.FC<Props> = () => {
     });
   }, [owner, repo]);
 
-  const {data: issue, isLoading} = getIssue({
+  const {data: issue, isLoading, isError} = getIssue({
     queryParams: {
       owner,
       repo,
@@ -50,16 +53,16 @@ export const Issue: React.FC<Props> = () => {
     },
   });
 
-  // TODO
-  if (!issue || isLoading) {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
+  if (isLoading) {
+    return <OverlayIndicator />;
   }
+
+  if (!issue || isError) {
+    return <ErrorText />;
+  }
+
   return (
-    <Box marginLeft="10%" marginRight="10%" paddingTop="16px">
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
       <Heading fontSize={20} marginBottom="16px">
         <Flex alignItems="center">
           <BiBookBookmark />
@@ -85,12 +88,7 @@ export const Issue: React.FC<Props> = () => {
               <Text fontWeight="bold">{issue.user.login}</Text>
               &nbsp;
               <Text>opened this issue </Text>
-              <Tooltip
-                aria-label={dayjs(issue.created_at).format(
-                  'MMM, D, YYYY, h:mm A, Z',
-                )}>
-                {pastTimeFormat(issue.created_at)}
-              </Tooltip>
+              <PastTimeText date={issue.created_at} />
             </Text>
           </Flex>
         </BorderBox>

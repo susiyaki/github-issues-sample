@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import {BiBookBookmark} from 'react-icons/bi';
-import {OverlayIndicator} from '@components/atoms';
+import {ErrorText, OverlayIndicator} from '@components/atoms';
 import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
@@ -51,7 +51,7 @@ export const Issues: React.FC<Props> = () => {
     },
     options: {refetchOnMount: false},
   });
-  const {status} = getIssues({
+  const {isLoading, isError} = getIssues({
     queryParams: {
       owner,
       repo,
@@ -99,12 +99,16 @@ export const Issues: React.FC<Props> = () => {
     [owner, repo],
   );
 
-  if (issues.length === 0 && status === 'loading') {
-    return <OverlayIndicator isVisible={true} />;
+  if (issues.length === 0 && isLoading) {
+    return <OverlayIndicator />;
+  }
+
+  if (isError) {
+    return <ErrorText />;
   }
 
   return (
-    <Box marginLeft="10%" marginRight="10%" paddingTop="16px">
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
       <Heading fontSize={20} marginBottom="16px">
         <Flex alignItems="center">
           <BiBookBookmark />
