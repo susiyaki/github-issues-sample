@@ -1,4 +1,5 @@
 export const colorService = {
+  // TODO: invalid pattern error
   hex2rgb: (hex: string): number[] => {
     if (hex.slice(0, 1) == '#') hex = hex.slice(1);
     if (hex.length == 3)
@@ -17,6 +18,7 @@ export const colorService = {
     });
   },
 
+  // TODO: invalid range error
   getLuminance: (rgb: number[]): number => {
     const r = 0.298912;
     const g = 0.586611;
