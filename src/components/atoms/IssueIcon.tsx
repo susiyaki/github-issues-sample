@@ -61,4 +61,3 @@ export const IssueIcon: React.FC<Props> = ({label, type, inverted}) => {
     );
   }
 };
-
