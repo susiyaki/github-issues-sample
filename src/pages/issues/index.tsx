@@ -6,15 +6,15 @@ import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {ApiResponse} from '@types';
 import {Box, Flex, Heading} from '@primer/components';
 import {BiBookBookmark} from 'react-icons/bi';
+import {RouteComponentProps} from 'react-router-dom';
 
-type Props = Record<string, unknown>;
+type Props = RouteComponentProps<{owner: string; repo: string}>;
 
 const PER_PAGE = 10;
-// TODO
-const owner = 'facebook';
-const repo = 'react';
+const DEFAULT_OWNER = 'facebook';
+const DEFAULT_REPO = 'react';
 
-export const Issues: React.FC<Props> = () => {
+export const Issues: React.FC<Props> = (props) => {
   const {getIssues} = useGithubIssuesApi();
   const {searchIssues} = useGithubSearchApi();
   const [issues, setIssuus] = useState<ApiResponse.Github.Issue[]>([]);
@@ -22,6 +22,11 @@ export const Issues: React.FC<Props> = () => {
   const [filter, setFilter] = useState<{state: 'all' | 'open' | 'closed'}>({
     state: 'open',
   });
+  let {owner, repo} = props.match.params;
+
+  // NOTE: repository一覧とか作ったらいい感じに飛ぶ
+  owner = owner && repo ? owner : DEFAULT_OWNER;
+  repo = owner && repo ? repo : DEFAULT_REPO;
 
   const {data: openIssues} = searchIssues({
     queryParams: {

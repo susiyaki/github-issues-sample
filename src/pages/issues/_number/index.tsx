@@ -2,17 +2,26 @@ import React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import {useGithubIssuesApi} from '@hooks';
 
-type Props = Record<string, unknown> & RouteComponentProps<{number: string}>;
-
-// TODO
-const owner = 'facebook';
-const repo = 'react';
+type Props = Record<string, unknown> &
+  RouteComponentProps<{owner: string; repo: string; number: string}>;
+const DEFAULT_OWNER = 'facebook';
+const DEFAULT_REPO = 'react';
 
 export const Issue: React.FC<Props> = (props) => {
   const {getIssue} = useGithubIssuesApi();
-  const issueNumStr = props.match.params.number;
+  const {number: issueNumStr} = props.match.params;
+  let {owner, repo} = props.match.params;
+
+  // NOTE: repository一覧とか作ったらいい感じに飛ぶ
+  owner = owner && repo ? owner : DEFAULT_OWNER;
+  repo = owner && repo ? repo : DEFAULT_REPO;
+
   const {data: issue, status} = getIssue({
-    queryParams: {owner, repo, issueNumStr},
+    queryParams: {
+      owner,
+      repo,
+      issueNumStr,
+    },
   });
 
   if (status === 'loading') {
