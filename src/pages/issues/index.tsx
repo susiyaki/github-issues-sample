@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import {BiBookBookmark} from 'react-icons/bi';
-import {ErrorText, OverlayIndicator} from '@components/atoms';
+import {ErrorText, OverlayIndicator, ToggleInput} from '@components/atoms';
 import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {ApiResponse} from '@types';
-import {Box, Flex, Heading} from '@primer/components';
+import {Box, Flex, PointerBox, Heading, Text} from '@primer/components';
 import {parseQueryString} from '@lib/parseQueryString';
 import {route} from '@config/route';
 
@@ -28,39 +28,41 @@ export const Issues: React.FC<Props> = () => {
   const {push} = useHistory();
   const {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
 
-  // NOTE: repository一覧とか作ったらいい感じに飛ぶ
+  // NOTE: 初回レンダリング時にownerかrepoがなかったらデフォルトを表示
   useEffect(() => {
     if (owner && repo) return;
+
     push({
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
     });
-  }, [owner, repo]);
+  }, []);
 
   const {data: openIssues} = searchIssues({
     queryParams: {
       repo: `${owner}/${repo}`,
       state: 'open',
     },
-    options: {refetchOnMount: false},
+    options: {refetchOnMount: false, retry: 0},
   });
   const {data: closedIssues} = searchIssues({
     queryParams: {
       repo: `${owner}/${repo}`,
       state: 'closed',
     },
-    options: {refetchOnMount: false},
+    options: {refetchOnMount: false, retry: 0},
   });
   const {isLoading, isError} = getIssues({
     queryParams: {
-      owner,
-      repo,
+      owner: owner,
+      repo: repo,
       page,
       perPage: PER_PAGE,
       state: filter.state,
     },
     options: {
       onSuccess: (res) => setIssuus(res),
+      retry: 0,
     },
   });
 
@@ -89,6 +91,18 @@ export const Issues: React.FC<Props> = () => {
     [page],
   );
 
+  const handleChangeQueryString = useCallback(
+    (e) => {
+      push({
+        pathname: route.issues,
+        search: `?owner=${
+          e.target.name === 'owner' ? e.target.value : owner
+        }&repo=${e.target.name === 'repo' ? e.target.value : repo}`,
+      });
+    },
+    [owner, repo],
+  );
+
   const handleClickIssueListItem = useCallback(
     (issue: ApiResponse.Github.Issue) => {
       push({
@@ -99,37 +113,65 @@ export const Issues: React.FC<Props> = () => {
     [owner, repo],
   );
 
-  if (issues.length === 0 && isLoading) {
-    return <OverlayIndicator />;
-  }
-
-  if (isError) {
-    return <ErrorText />;
-  }
-
   return (
     <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
       <Heading fontSize={20} marginBottom="16px">
         <Flex alignItems="center">
-          <BiBookBookmark />
-          &nbsp;
-          {owner}/{repo}
+          <Box marginRight="16px">
+            <BiBookBookmark />
+            &nbsp;
+            <ToggleInput
+              name="owner"
+              mode="standalone"
+              value={owner}
+              placeholder="Owner"
+              onBlur={handleChangeQueryString}
+            />
+            <Text>/</Text>
+            <ToggleInput
+              name="repo"
+              mode="standalone"
+              value={repo}
+              placeholder="repository"
+              onBlur={handleChangeQueryString}
+            />
+          </Box>
+          <Box>
+            <PointerBox caret="left">
+              <Text
+                fontSize={12}
+                paddingTop="8px"
+                paddingBottom="8px"
+                paddingLeft="16px"
+                paddingRight="16px">
+                You can change owner and repository.
+              </Text>
+            </PointerBox>
+          </Box>
         </Flex>
       </Heading>
-      <IssueList
-        issues={issues}
-        filter={filter}
-        openIssuesCount={openIssues?.total_count}
-        closedIssuesCount={closedIssues?.total_count}
-        handleChangeFilter={handleChangeFilter}
-        handleClickIssueListItem={handleClickIssueListItem}
-      />
-      <Pagination
-        currentPage={page}
-        perPage={PER_PAGE}
-        totalCount={totalCount}
-        onPageChange={handlePageChange}
-      />
+      {isError ? (
+        <ErrorText />
+      ) : issues.length === 0 && isLoading ? (
+        <OverlayIndicator />
+      ) : (
+        <>
+          <IssueList
+            issues={issues}
+            filter={filter}
+            openIssuesCount={openIssues?.total_count}
+            closedIssuesCount={closedIssues?.total_count}
+            handleChangeFilter={handleChangeFilter}
+            handleClickIssueListItem={handleClickIssueListItem}
+          />
+          <Pagination
+            currentPage={page}
+            perPage={PER_PAGE}
+            totalCount={totalCount}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </Box>
   );
 };
