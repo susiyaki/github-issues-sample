@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactLoading from 'react-loading';
+
 import {CgGhostCharacter} from 'react-icons/cg';
 
 type Props = {
