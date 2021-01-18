@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import {BiBookBookmark} from 'react-icons/bi';
-import {OverlayIndicator} from '@components/atoms';
+import {ErrorText, OverlayIndicator} from '@components/atoms';
 import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
@@ -30,6 +30,7 @@ export const Issues: React.FC<Props> = () => {
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
   useEffect(() => {
+    if (owner && repo) return;
     push({
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
@@ -50,7 +51,7 @@ export const Issues: React.FC<Props> = () => {
     },
     options: {refetchOnMount: false},
   });
-  const {status} = getIssues({
+  const {isLoading, isError} = getIssues({
     queryParams: {
       owner,
       repo,
@@ -88,12 +89,26 @@ export const Issues: React.FC<Props> = () => {
     [page],
   );
 
-  if (issues.length === 0 && status === 'loading') {
-    return <OverlayIndicator isVisible={true} />;
+  const handleClickIssueListItem = useCallback(
+    (issue: ApiResponse.Github.Issue) => {
+      push({
+        pathname: route.showIssue(issue.number),
+        search: `?owner=${owner}&repo=${repo}`,
+      });
+    },
+    [owner, repo],
+  );
+
+  if (issues.length === 0 && isLoading) {
+    return <OverlayIndicator />;
+  }
+
+  if (isError) {
+    return <ErrorText />;
   }
 
   return (
-    <Box marginLeft="10%" marginRight="10%" paddingTop="16px">
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
       <Heading fontSize={20} marginBottom="16px">
         <Flex alignItems="center">
           <BiBookBookmark />
@@ -107,6 +122,7 @@ export const Issues: React.FC<Props> = () => {
         openIssuesCount={openIssues?.total_count}
         closedIssuesCount={closedIssues?.total_count}
         handleChangeFilter={handleChangeFilter}
+        handleClickIssueListItem={handleClickIssueListItem}
       />
       <Pagination
         currentPage={page}

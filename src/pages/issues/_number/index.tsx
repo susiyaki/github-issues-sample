@@ -1,4 +1,8 @@
 import React, {useEffect} from 'react';
+import {Box, Flex, Heading} from '@primer/components';
+import {OverlayIndicator, ErrorText} from '@components/atoms';
+import {IssueDetailBody, IssueDetailHeader} from '@components/organisms';
+import {BiBookBookmark} from 'react-icons/bi';
 import {useLocation, useRouteMatch, useHistory} from 'react-router-dom';
 import {useGithubIssuesApi} from '@hooks';
 import {parseQueryString} from '@lib/parseQueryString';
@@ -21,13 +25,14 @@ export const Issue: React.FC<Props> = () => {
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
   useEffect(() => {
+    if (owner && repo) return;
     push({
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
     });
   }, [owner, repo]);
 
-  const {data: issue, status} = getIssue({
+  const {data: issue, isLoading, isError} = getIssue({
     queryParams: {
       owner,
       repo,
@@ -35,18 +40,25 @@ export const Issue: React.FC<Props> = () => {
     },
   });
 
-  if (status === 'loading') {
-    return (
-      <div>
-        <p>loading...</p>
-      </div>
-    );
+  if (isLoading) {
+    return <OverlayIndicator />;
   }
+
+  if (!issue || isError) {
+    return <ErrorText />;
+  }
+
   return (
-    <div>
-      <p>issue番号: {issue?.number}</p>
-      <p>タイトル: {issue?.title}</p>
-      <p>本文: {issue?.body}</p>
-    </div>
+    <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
+      <Heading fontSize={20} marginBottom="16px">
+        <Flex alignItems="center">
+          <BiBookBookmark />
+          &nbsp;
+          {owner}/{repo}
+        </Flex>
+      </Heading>
+      <IssueDetailHeader issue={issue} />
+      <IssueDetailBody issue={issue} />
+    </Box>
   );
 };

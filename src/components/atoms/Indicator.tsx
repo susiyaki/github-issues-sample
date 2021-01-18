@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactLoading from 'react-loading';
+import {CgGhostCharacter} from 'react-icons/cg';
 
 type Props = {
-  isVisible: boolean;
+  isVisible?: boolean;
 };
 
-export const OverlayIndicator: React.FC<Props> = ({isVisible}) => {
+export const OverlayIndicator: React.FC<Props> = ({isVisible = true}) => {
   if (!isVisible) return null;
 
   return (
@@ -26,6 +27,7 @@ export const OverlayIndicator: React.FC<Props> = ({isVisible}) => {
           marginLeft: '-10px',
           marginTop: '-10px',
         }}>
+        <CgGhostCharacter size={20} />
         <ReactLoading type="spin" height={20} width={20} color="#000" />
       </div>
     </div>
