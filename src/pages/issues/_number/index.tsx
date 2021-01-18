@@ -1,16 +1,21 @@
 import React from 'react';
-import {RouteComponentProps} from 'react-router-dom';
+import {useLocation, useRouteMatch} from 'react-router-dom';
 import {useGithubIssuesApi} from '@hooks';
+import {parseQueryString} from '@lib/parseQueryString';
 
-type Props = Record<string, unknown> &
-  RouteComponentProps<{owner: string; repo: string; number: string}>;
-const DEFAULT_OWNER = 'facebook';
+type Props = Record<string, unknown>;
+const DEFAULT_OWNER = 'facebook';
 const DEFAULT_REPO = 'react';
 
-export const Issue: React.FC<Props> = (props) => {
+export const Issue: React.FC<Props> = () => {
   const {getIssue} = useGithubIssuesApi();
-  const {number: issueNumStr} = props.match.params;
-  let {owner, repo} = props.match.params;
+  const {
+    params: {number: issueNumStr},
+  } = useRouteMatch<{
+    number: string;
+  }>();
+  const {search} = useLocation();
+  let {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
   owner = owner && repo ? owner : DEFAULT_OWNER;
