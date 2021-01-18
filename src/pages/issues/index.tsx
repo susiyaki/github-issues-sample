@@ -43,6 +43,7 @@ export const Issues: React.FC<Props> = () => {
       repo: `${owner}/${repo}`,
       state: 'open',
     },
+
     options: {refetchOnMount: false, retry: 0},
   });
   const {data: closedIssues} = searchIssues({
