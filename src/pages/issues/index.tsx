@@ -6,7 +6,7 @@ import {Pagination} from '@components/molecules';
 import {IssueList} from '@components/organisms';
 import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {ApiResponse} from '@types';
-import {Box, Flex, Heading, Text} from '@primer/components';
+import {Box, Flex, PointerBox, Heading, Text} from '@primer/components';
 import {parseQueryString} from '@lib/parseQueryString';
 import {route} from '@config/route';
 
@@ -36,7 +36,7 @@ export const Issues: React.FC<Props> = () => {
       pathname: route.issues,
       search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
     });
-  }, [owner, repo]);
+  }, []);
 
   const {data: openIssues} = searchIssues({
     queryParams: {
@@ -117,23 +117,37 @@ export const Issues: React.FC<Props> = () => {
     <Box marginLeft="10%" marginRight="10%" paddingTop="16px" marginBottom="5%">
       <Heading fontSize={20} marginBottom="16px">
         <Flex alignItems="center">
-          <BiBookBookmark />
-          &nbsp;
-          <ToggleInput
-            name="owner"
-            mode="standalone"
-            value={owner}
-            placeholder="Owner"
-            onBlur={handleChangeQueryString}
-          />
-          <Text>/</Text>
-          <ToggleInput
-            name="repo"
-            mode="standalone"
-            value={repo}
-            placeholder="repository"
-            onBlur={handleChangeQueryString}
-          />
+          <Box marginRight="16px">
+            <BiBookBookmark />
+            &nbsp;
+            <ToggleInput
+              name="owner"
+              mode="standalone"
+              value={owner}
+              placeholder="Owner"
+              onBlur={handleChangeQueryString}
+            />
+            <Text>/</Text>
+            <ToggleInput
+              name="repo"
+              mode="standalone"
+              value={repo}
+              placeholder="repository"
+              onBlur={handleChangeQueryString}
+            />
+          </Box>
+          <Box>
+            <PointerBox caret="left">
+              <Text
+                fontSize={12}
+                paddingTop="8px"
+                paddingBottom="8px"
+                paddingLeft="16px"
+                paddingRight="16px">
+                You can change owner and repository.
+              </Text>
+            </PointerBox>
+          </Box>
         </Flex>
       </Heading>
       {isError ? (
