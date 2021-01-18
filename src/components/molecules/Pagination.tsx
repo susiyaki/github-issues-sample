@@ -18,6 +18,10 @@ export const Pagination: React.FC<Props> = ({
     return Math.ceil(totalCount / perPage);
   }, [perPage, totalCount]);
 
+  if (!pageCount) {
+    return null;
+  }
+
   return (
     <PrimerPagination
       {...props}
