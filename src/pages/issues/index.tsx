@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import {BiBookBookmark} from 'react-icons/bi';
 import {OverlayIndicator} from '@components/atoms';
 import {Pagination} from '@components/molecules';
@@ -8,6 +8,7 @@ import {useGithubIssuesApi, useGithubSearchApi} from '@hooks';
 import {ApiResponse} from '@types';
 import {Box, Flex, Heading} from '@primer/components';
 import {parseQueryString} from '@lib/parseQueryString';
+import {route} from '@config/route';
 
 type Props = Record<string, unknown>;
 
@@ -24,11 +25,16 @@ export const Issues: React.FC<Props> = () => {
     state: 'open',
   });
   const {search} = useLocation();
-  let {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
+  const {push} = useHistory();
+  const {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
-  owner = owner && repo ? owner : DEFAULT_OWNER;
-  repo = owner && repo ? repo : DEFAULT_REPO;
+  useEffect(() => {
+    push({
+      pathname: route.issues,
+      search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
+    });
+  }, [owner, repo]);
 
   const {data: openIssues} = searchIssues({
     queryParams: {

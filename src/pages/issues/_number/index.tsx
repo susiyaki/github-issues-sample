@@ -1,7 +1,8 @@
-import React from 'react';
-import {useLocation, useRouteMatch} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useLocation, useRouteMatch, useHistory} from 'react-router-dom';
 import {useGithubIssuesApi} from '@hooks';
 import {parseQueryString} from '@lib/parseQueryString';
+import {route} from '@config/route';
 
 type Props = Record<string, unknown>;
 const DEFAULT_OWNER = 'facebook';
@@ -15,11 +16,16 @@ export const Issue: React.FC<Props> = () => {
     number: string;
   }>();
   const {search} = useLocation();
-  let {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
+  const {push} = useHistory();
+  const {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
 
   // NOTE: repository一覧とか作ったらいい感じに飛ぶ
-  owner = owner && repo ? owner : DEFAULT_OWNER;
-  repo = owner && repo ? repo : DEFAULT_REPO;
+  useEffect(() => {
+    push({
+      pathname: route.issues,
+      search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
+    });
+  }, [owner, repo]);
 
   const {data: issue, status} = getIssue({
     queryParams: {
