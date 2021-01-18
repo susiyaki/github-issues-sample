@@ -6,3 +6,4 @@ export * from './Indicator';
 export * from './MarkdownViewer';
 export * from './PastTimeText';
 export * from './ErrorText';
+export * from './ToggleInput';

@@ -9,8 +9,6 @@ import {parseQueryString} from '@lib/parseQueryString';
 import {route} from '@config/route';
 
 type Props = Record<string, unknown>;
-const DEFAULT_OWNER = 'facebook';
-const DEFAULT_REPO = 'react';
 
 export const Issue: React.FC<Props> = () => {
   const {getIssue} = useGithubIssuesApi();
@@ -23,13 +21,11 @@ export const Issue: React.FC<Props> = () => {
   const {push} = useHistory();
   const {owner, repo} = parseQueryString<{owner: string; repo: string}>(search);
 
-  // NOTE: repository一覧とか作ったらいい感じに飛ぶ
+  // NOTE: 直アクセスしてきてownerかrepoがないとき一覧にとばす
   useEffect(() => {
     if (owner && repo) return;
-    push({
-      pathname: route.issues,
-      search: `?owner=${DEFAULT_OWNER}&repo=${DEFAULT_REPO}`,
-    });
+
+    push(route.issues);
   }, [owner, repo]);
 
   const {data: issue, isLoading, isError} = getIssue({
@@ -44,7 +40,14 @@ export const Issue: React.FC<Props> = () => {
     return <OverlayIndicator />;
   }
 
+  // NOTE: エラーが起きたらエラー表示後前の一覧に飛ばす
   if (!issue || isError) {
+    setTimeout(() => {
+      push({
+        pathname: route.issues,
+        search: `?owner=${owner}&repo=${repo}`,
+      });
+    }, 1000);
     return <ErrorText />;
   }
 
