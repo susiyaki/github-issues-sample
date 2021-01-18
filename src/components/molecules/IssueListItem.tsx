@@ -15,7 +15,7 @@ export const IssueListItem: React.FC<Props> = ({issue, onClick}) => {
     <Box>
       <Flex>
         <Box paddingTop="8px" paddingLeft="16px">
-          <IssueIcon state={issue.state} />
+          <IssueIcon type={issue.state} />
         </Box>
         <Box padding="8px">
           <Box>

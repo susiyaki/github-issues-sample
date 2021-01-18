@@ -9,7 +9,6 @@ type Props = {
 
 export const MarkdownViewer: React.FC<Props> = ({markdonwText}) => {
   const html = marked(markdonwText, {gfm: true});
-  console.log(html);
   return (
     <Box
       className="markdown-body"
